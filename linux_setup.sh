@@ -23,14 +23,14 @@ verify_dir() {
 echo "Upgrading pip..."
 pip install pip -U
 echo "Installing dependencies..."
-pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 xformers==0.0.28.post3 --index-url https://download.pytorch.org/whl/cu124
-pip install torchao --index-url https://download.pytorch.org/whl/nightly/cu124
+pip install torch torchvision torchaudio xformers
+pip install torchao 
 if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
 else
     echo "requirements.txt not found. Skipping requirements installation."
 fi
-pip install --no-deps facenet_pytorch==2.6.0
+pip install --no-deps facenet_pytorch
 
 # Install FFmpeg
 if [ ! -d "ffmpeg-4.4-amd64-static" ]; then
@@ -45,6 +45,7 @@ export FFMPEG_PATH="$PWD/ffmpeg-4.4-amd64-static"
 # Initialize git LFS and clone pretrained weights
 if ! git lfs env &>/dev/null; then
     echo "Initializing Git LFS..."
+    apt install -y git-lfs
     git lfs install
 else
     echo "Git LFS already initialized. Skipping."
